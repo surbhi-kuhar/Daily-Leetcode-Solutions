@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+
+        int totalFuel=0;
+        int totaldist=0;
+        for(int i=0;i<gas.size();i++){
+            totalFuel+=gas[i];
+            totaldist+=cost[i];
+        }
+
+        if(totalFuel<totaldist)  return -1;
+
+
+        int fuelInTank=0;
+        int start=0;
+        for(int i=0;i<gas.size();i++){
+            fuelInTank+=gas[i];
+            fuelInTank-=cost[i];
+
+            if(fuelInTank<0) {
+                start=i+1;
+                fuelInTank=0;
+            }
+           
+        }
+
+        return start;
+        
+    }
+};
