@@ -1,0 +1,45 @@
+class Solution {
+public:
+
+    vector<int> dfs(unordered_map<int,list<int>>&adj,string &labels , int node , int parent , vector<int>&ans ){
+
+        vector<int>count(26,0);  
+        count[labels[node]-'a']=1;
+
+        for(auto i:adj[node]){
+             
+            if(i==parent) continue;
+
+            vector<int>temp=dfs(adj,labels,i,node,ans);
+
+            for(int j=0;j<26;j++){
+                count[j]+=temp[j];
+            }
+
+        }
+
+        ans[node]=count[labels[node]-'a'];
+
+        return count;
+    }
+    
+    vector<int> countSubTrees(int n, vector<vector<int>>& edges, string labels) {
+        unordered_map<int,list<int>>adj;
+        for(int i=0;i<edges.size();i++){
+            int u=edges[i][0];
+            int v=edges[i][1];
+
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+
+        vector<int>ans(n,0);
+
+        
+        vector<int>tem=dfs(adj,labels,0,-1,ans);
+        
+        return ans;
+
+
+    }
+};
