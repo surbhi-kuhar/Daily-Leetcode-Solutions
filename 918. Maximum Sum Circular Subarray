@@ -1,0 +1,59 @@
+class Solution {
+public:
+    int maxSubarraySumCircular(vector<int>& nums) {
+
+        // find the minimum subarray and sum of all elements of the array.
+        // total - min subarray will return us the maximum subarray.
+
+        int n = nums.size();
+
+        int total = 0;
+        int min_end_here=0;
+        int minSum=INT_MAX;
+        int maxSum=INT_MIN;
+        int max_end_here=0;
+
+
+        
+
+        for(int i=0;i<n;i++){
+            total += nums[i];
+
+            min_end_here += nums[i];
+
+            if(min_end_here < minSum ){
+                minSum=min_end_here;
+            }
+
+            if(min_end_here > 0){
+                min_end_here = 0;
+            }
+
+    max_end_here+=nums[i];
+       if(max_end_here > maxSum ){
+                maxSum=max_end_here;
+            }
+
+            if(max_end_here < 0){
+                max_end_here = 0;
+            }
+
+
+        }
+        
+
+        
+
+
+
+        if(total==minSum) {
+        
+
+            return maxSum;
+        }
+
+        return max(total-minSum,maxSum);
+
+        
+    }
+};
