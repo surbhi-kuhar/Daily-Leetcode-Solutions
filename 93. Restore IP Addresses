@@ -1,0 +1,45 @@
+class Solution {
+public:
+
+    void dfs(string s,int start,int dot,string ip,vector<string>&ans){
+        int n=s.size();
+
+        if(start==n && dot==4){
+            ip.erase(ip.end()-1);
+            ans.push_back(ip);
+            return;
+        }
+
+        // 25525511135
+        // 2.5.
+        // 12-2 == 10 > (4-2)*6
+
+        if((n-start)>(4-dot)*3)  return ;
+
+        // 255255255
+        // 255.255.255 
+        // we do not have a digit and still we have to complete one dot.
+        if((n-start) < (4-dot)) return ;
+
+        int num=0;
+        for(int i=start;i<start+3;i++){
+            num=num*10+(s[i]-'0');
+
+            if(num<=255){
+                ip+=s[i];
+                dfs(s,i+1,dot+1,ip+'.',ans);
+            }
+
+            if(num==0) break;
+        }
+
+    }
+    vector<string> restoreIpAddresses(string s) {
+
+        vector<string>ans;
+        string ip;
+        dfs(s,0,0,ip,ans);
+        
+        return ans;
+    }
+};
