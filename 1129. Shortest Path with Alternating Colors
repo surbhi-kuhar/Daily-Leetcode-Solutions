@@ -1,0 +1,57 @@
+class Solution {
+    public:
+    vector<int> shortestAlternatingPaths(int n, vector<vector<int>>&redEdges,      vector<vector<int>>&blueEdges){
+
+        unordered_map<int,list<pair<int,int>>>mp;
+        // 0 for red color
+        // 1 for blue color
+
+        for(auto x:redEdges){
+            mp[x[0]].push_back(make_pair(x[1],0));
+        }
+
+        for(auto y:blueEdges){
+            mp[y[0]].push_back(make_pair(y[1],1));
+        }
+
+
+        queue<vector<int>>q;    // node,steps,color
+        q.push({0,0,-1});
+        vector<vector<bool>>vis(n,vector<bool>(2));
+        vis[0][0]=true;
+        vis[0][1]=true;
+
+        vector<int>ans(n,-1);
+        ans[0]=0;
+
+        while(!q.empty()){
+            auto top=q.front();
+            q.pop();
+
+            int node=top[0];
+            int steps=top[1];
+            int prevColor=top[2];
+
+            for(auto x:mp[node]){
+                int neighbour=x.first;
+                int color=x.second;
+                if(!vis[neighbour][color] && color!=prevColor){
+                    vis[neighbour][color]=true;
+                    q.push({neighbour,1+steps,color});
+                    
+                    if(ans[neighbour]==-1){
+                        ans[neighbour]=1+steps;
+                    }
+                }
+            }
+        }
+
+        return ans;
+
+
+
+
+    }
+
+
+};
