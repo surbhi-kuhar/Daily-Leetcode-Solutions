@@ -1,0 +1,40 @@
+class Solution {
+public:
+
+    long long ans=0;
+    int count(int curr,unordered_map<int,list<int>>&adj,int seats,vector<int>&vis){
+
+        int cnt=1;
+
+        vis[curr]=true;
+
+        for(auto x:adj[curr]){
+            if(!vis[x]){
+                cnt+=count(x,adj,seats,vis);
+            }
+        }
+
+        if(curr!=0){
+            ans+=((cnt+seats-1)/seats);
+        }
+        return cnt;
+
+    }
+
+    long long minimumFuelCost(vector<vector<int>>& roads, int seats) {
+        
+        unordered_map<int,list<int>>adj;
+        for(int i=0;i<roads.size();i++){
+            int u=roads[i][0];
+            int v=roads[i][1];
+
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+
+        vector<int>vis(roads.size()+1);
+       
+        count(0,adj,seats,vis);
+        return ans;
+    }
+};
