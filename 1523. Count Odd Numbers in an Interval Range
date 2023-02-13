@@ -1,0 +1,9 @@
+class Solution {
+public:
+    int countOdds(int low, int high) {
+
+        // odd numbers from 1 to low-1 are low/2.
+        // odd numbers from 1 to high are (1+high)/2.
+        return (high+1)/2 - (low)/2;
+    }
+};
