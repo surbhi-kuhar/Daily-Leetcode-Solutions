@@ -1,0 +1,57 @@
+class compare{
+
+       public:
+
+       bool operator()(const ListNode* a, const ListNode* b) {
+        return a->val > b->val;
+
+    };
+
+
+class Solution {
+public:
+    
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        
+         priority_queue<ListNode*, vector<ListNode*>, compare>minHeap;
+
+         if(lists.size()==0)  return NULL;
+
+         for(int i=0;i<lists.size();i++){
+             if (lists[i] != NULL) {
+                minHeap.push(lists[i]);
+            }
+          }
+
+         ListNode*head=NULL;
+         ListNode*tail=NULL;
+
+         while(!minHeap.empty()){
+             ListNode*tmp=minHeap.top();
+             minHeap.pop();
+
+             if(tmp->next!=NULL){
+                 minHeap.push(tmp->next);
+             }
+
+             if(head==NULL){
+                 //list is empty in this case
+
+                 head=tmp;
+                 tail=tmp;
+             }
+
+             else{
+
+                 // inserting nodes in a non empty LL
+
+                 tail->next=tmp;
+                 tail=tmp;
+
+             }
+         }
+
+         return head;
+    }
+
+};
