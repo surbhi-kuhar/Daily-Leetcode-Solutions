@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool solve(TreeNode*lt,TreeNode*rt){
+        if(lt==NULL && rt==NULL) return true;
+        else if(lt==NULL || rt==NULL) return false;
+        
+        else if(lt->val!=rt->val) return false;
+        
+        return solve(lt->left,rt->right) && solve(lt->right,rt->left);
+        
+    }
+    
+    bool isSymmetric(TreeNode* root) {
+        if(root==NULL) return true;
+        
+        return solve(root->left,root->right);
+    }
+};
