@@ -1,0 +1,45 @@
+class Solution {
+public:
+
+    int index;
+
+    int search(vector<int>& inorder,int start,int end,int curr){
+        for(int i=start;i<=end;i++){
+            if(curr==inorder[i]){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    TreeNode* solve(vector<int>& inorder, vector<int>& postorder,int start,int end){
+
+
+        if(start>end)  return NULL;
+
+        int curr=postorder[index];
+        index--;
+
+        TreeNode*root=new TreeNode(curr);
+
+         if(start==end)  return root;
+
+        int pos=search(inorder,start,end,curr);
+
+        
+        root->right=solve(inorder,postorder,pos+1,end);
+        root->left=solve(inorder,postorder,start,pos-1);
+
+        return root;
+
+    }
+
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+
+        int n=inorder.size();
+        index=n-1;
+
+        return solve(inorder,postorder,0,index);
+        
+    }
+};
