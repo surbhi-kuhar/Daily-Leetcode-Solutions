@@ -1,0 +1,38 @@
+class Solution {
+public:
+
+    void dfs(unordered_map<int,bool>&visited,unordered_map<int,list<int>>&adj,int node){
+        visited[node]=true;
+        for(auto x:adj[node]){
+            if(!visited[x]){
+                dfs(visited,adj,x);
+            }
+        }
+    }
+
+    int makeConnected(int n, vector<vector<int>>& connections) {
+        
+        if(connections.size()<n-1) return -1;
+        unordered_map<int,list<int>>adj;
+        for(int i=0;i<connections.size();i++){
+            int u=connections[i][0];
+            int v=connections[i][1];
+
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+
+        int count=0;
+        unordered_map<int,bool>visited;
+        for(int i=0;i<n;i++){
+            if(!visited[i]){
+                dfs(visited,adj,i);
+                count++;
+            }
+        }
+
+        return count-1;
+
+
+    }
+};
