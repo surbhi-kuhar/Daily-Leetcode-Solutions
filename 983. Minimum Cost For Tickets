@@ -1,0 +1,124 @@
+class Solution {
+public:
+    // RECURSIVE 
+
+    // int solve(int n,vector<int>& days, vector<int>& costs,int i){
+        
+    //     //base case 
+    //     if(i>=n) return 0;
+
+    //     //ONE DAY PASS
+    //     int one_day=costs[0]+solve(n,days,costs,i+1);
+
+    //     // SEVEN DAY PASS : move index forward by 7 steps
+    //     int index;
+    //     for(index=i;index<n && days[index]<days[i]+7;index++);
+    //     int seven_days=costs[1]+solve(n,days,costs,index);
+
+    //     // THIRTY DAYS PASS : move index forward by 30 steps
+    //     for(index=i;index<n && days[index]<days[i]+30;index++);
+    //     int thirty_days=costs[2]+solve(n,days,costs,index);
+
+    //     return min(one_day,min(seven_days,thirty_days));
+    
+
+    // }
+
+    //RECURSION + MEMOIZATION
+
+    // int solve(int n,vector<int>& days, vector<int>& costs,int i,vector<int>&dp){
+        
+    //     //base case 
+    //     if(i>=n) return 0;
+
+    //     if(dp[i]!=-1) return dp[i];
+
+    //     //ONE DAY PASS
+    //     int one 
+    //     // SEVEN DAY PASS : move index forward by 7 steps
+    //     int index;
+    //     for(index=i;index<n && days[index]<days[i]+7;index++);
+    //     int seven_days=costs[1]+solve(n,days,costs,index,dp);
+
+    //     // THIRTY DAYS PASS : move index forward by 30 steps
+    //     for(index=i;index<n && days[index]<days[i]+30;index++);
+    //     int thirty_days=costs[2]+solve(n,days,costs,index,dp);
+
+    //     dp[i]=min(one_day,min(seven_days,thirty_days));
+    //     return dp[i];
+
+    // }
+
+
+    //TABULATION
+
+    // int solve(int n,vector<int>& days, vector<int>& costs,int i){
+        
+    //     vector<int>dp(n+1,INT_MAX);
+    //     dp[n]=0;
+
+    //     // we started from bottom bcz it is a bottom up apporoach
+
+    //     for(int index=n-1;index>=0;index--){
+            
+    //         //ONE DAY PASS
+    //         int one_day=costs[0]+dp[index+1];
+
+    //         // SEVEN DAY PASS : move index forward by 7 steps
+    //         int ind;
+    //         for(ind=index;ind<n && days[ind]<days[index]+7;ind++);
+    //         int seven_days=costs[1]+dp[ind];
+
+    //         // THIRTY DAYS PASS : move index forward by 30 steps
+    //         for(ind=index;ind<n && days[ind]<days[index]+30;ind++);
+    //         int thirty_days=costs[2]+dp[ind];
+
+    //         dp[index]=min(one_day,min(seven_days,thirty_days));
+
+    //     }
+
+    //     return dp[0];
+
+
+    //SPACE OPTIMIZATION
+    int solve(vector<int>&days,vector<int>&costs){
+
+        int ans=0;
+
+        queue<pair<int,int>>month;
+        queue<pair<int,int>>week;
+
+        for(int day:days){
+            // remove expired values
+            while(!month.empty() && month.front().first+30<=day){
+                month.pop();
+            }
+            while(!week.empty() && week.front().first+7<=day){
+                week.pop();
+            }
+
+            // push current value in the queues
+            week.push(make_pair(day,ans+costs[1]));
+            month.push(make_pair(day,ans+costs[2]));
+
+            // update value of ans
+            ans=min(ans+costs[0],min(month.front().second,week.front().second));
+
+        }
+
+        return ans;
+        
+    }
+
+
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        int n=days.size();
+        // vector<int>dp(n+1,-1);
+        // return solve(n,days,costs,0,dp);
+
+        // return solve(n,days,costs,0);
+
+        return solve(days,costs);
+
+    }
+};
