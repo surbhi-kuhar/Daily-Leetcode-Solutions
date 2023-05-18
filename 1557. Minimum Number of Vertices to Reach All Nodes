@@ -1,12 +1,73 @@
 class Solution {
 public:
-       vector<int> findSmallestSetOfVertices(int n, vector<vector<int>>& edges) {
-        vector<int> res, seen(n);
-        for (auto& e: edges)
-            seen[e[1]] = 1;
-        for (int i = 0; i < n; ++i)
-            if (seen[i] == 0)
-                res.push_back(i);
-        return res;
+
+    void topoSort(unordered_map<int,list<int>>&adj,vector<bool>&visited,stack<int>&st,int node){
+
+        visited[node]=true;
+
+        for(auto neigh:adj[node]){
+            if(!visited[neigh]){
+                topoSort(adj,visited,st,neigh);
+            }
+        }
+        st.push(node);
+
+
+    }
+
+
+    void dfs(vector<bool>&visited,unordered_map<int,list<int>>&adj,int &N,int node){
+
+        visited[node]=true;
+        N++;
+
+        for(auto neigh:adj[node]){
+            if(!visited[neigh]){
+                dfs(visited,adj,N,neigh);
+            }
+        }
+
+    }
+    vector<int> findSmallestSetOfVertices(int n, vector<vector<int>>& edges) {
+
+        unordered_map<int,list<int>>adj;
+        stack<int>st;
+
+        for(int i=0;i<edges.size();i++){
+            int u=edges[i][0];
+            int v=edges[i][1];
+
+            adj[u].push_back(v);
+        }
+
+        // topological sort
+        vector<bool>visited(n,false);
+        for(int i=0;i<n;i++){
+            if(!visited[i]){
+                topoSort(adj,visited,st,i);
+            }
+        }
+
+        for(int i=0;i<n;i++){
+            visited[i]=false;
+        }
+
+
+        int N=0;
+        vector<int> ans;
+
+        while(!st.empty() && N<n){
+            int top=st.top();
+            st.pop();
+
+            if(!visited[top]){
+                ans.push_back(top);
+                dfs(visited,adj,N,top);
+            }
+        }
+
+
+        return ans;
+ 
     }
 };
