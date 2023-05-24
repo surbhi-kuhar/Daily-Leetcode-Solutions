@@ -1,0 +1,37 @@
+class Solution {
+public:
+    static bool cmp(pair<int, int> &a, pair<int, int> &b) {
+        return a.second > b.second;
+    }
+
+    long long maxScore(vector<int>& nums1, vector<int>& nums2, int k) {
+        int n = nums1.size();
+
+        vector<pair<int, int>> p;
+        for(int i=0; i<n; i++) {
+            p.push_back({nums1[i], nums2[i]});
+        }
+
+        sort(p.begin(), p.end(), cmp);
+
+        long long sm = 0;
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        for(int i=0; i<k; i++) {
+            pq.push(p[i]);
+            sm += p[i].first;
+        }
+
+        long long ans = (long long)sm * p[k-1].second;
+        if(n == k) return ans;
+
+        for(int i=k; i<n; i++) {
+            sm += (p[i].first - pq.top().first);
+            pq.pop();
+            pq.push(p[i]);
+
+            ans = max(ans, (long long)sm * p[i].second);
+        }
+
+        return ans;
+    }
+};
