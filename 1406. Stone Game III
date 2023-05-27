@@ -1,0 +1,20 @@
+class Solution {
+    int dfs(int i, int n, vector<int> &nums, vector<int> &dp) {
+        if(i >= n) return 0;
+        if(dp[i] != -1) return dp[i];
+
+        int pick1 = nums[i] - dfs(i + 1, n, nums, dp);
+        int pick2 = i + 1 < n ? nums[i] + nums[i + 1] - dfs(i + 2, n, nums, dp) : -1e9;
+        int pick3 = i + 2 < n ? nums[i] + nums[i + 1] + nums[i + 2] - dfs(i + 3, n, nums, dp) : -1e9;
+
+        return dp[i] = max({pick1, pick2, pick3});
+    }
+public:
+    string stoneGameIII(vector<int>& stoneValue) {
+        int n = stoneValue.size();
+        vector<int> dp(n, -1);
+
+        int ans = dfs(0, n, stoneValue, dp);
+        return ans > 0 ? "Alice" : ans < 0 ? "Bob" : "Tie";
+    }
+};
