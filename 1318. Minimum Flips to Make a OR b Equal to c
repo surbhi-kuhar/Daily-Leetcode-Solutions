@@ -1,0 +1,81 @@
+class Solution {
+public:
+
+    string convertToBinary(int a){
+        string ans="";
+        while(a!=0){
+            ans+=a%2+'0';
+            a/=2;
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+
+    int minFlips(int a, int b, int c) {
+        string binA=convertToBinary(a);
+        string binB=convertToBinary(b);
+        string binC=convertToBinary(c);
+
+
+        int al=binA.length();
+        int bl=binB.length();
+        int cl=binC.length();
+
+        int n=max(al,max(bl,cl));
+
+        if(al<n){
+
+            reverse(binA.begin(),binA.end());
+            int z=n-al;
+            while(z--){
+                binA+='0';
+            }
+            reverse(binA.begin(),binA.end());
+            
+        }
+
+        if(bl<n){
+            reverse(binB.begin(),binB.end());
+            
+            int z=n-bl;
+            while(z--){
+                binB+='0';
+            }
+            reverse(binB.begin(),binB.end());
+            
+        }
+
+        if(cl<n){
+            reverse(binC.begin(),binC.end());
+            
+            int z=n-cl;
+            while(z--){
+                binC+='0';
+            }
+            reverse(binC.begin(),binC.end());
+            
+        }
+
+        int count=0;
+        for(int i=n-1;i>=0;i--){
+            int x=binA[i]-'0';
+            int y=binB[i]-'0';
+            int z=binC[i]-'0';
+            if((x | y) == z)  continue;
+            else{
+                if(z==0){
+                    if(x==1 && y==1) count+=2;
+                    else if((x==0 && y==1 )|| (x==1 && y==0)) count++;
+                }
+                else{
+                    if(x==0 && y==0) count+=1;
+                }
+            }
+        }
+
+        return count;
+
+
+
+    }
+};
