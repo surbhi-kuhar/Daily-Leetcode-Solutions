@@ -42,7 +42,8 @@ while ( low < high )
 return low ;
 
 // return 1
-    
+
+This took us O(log(n)) time complexity.
 
 
 
