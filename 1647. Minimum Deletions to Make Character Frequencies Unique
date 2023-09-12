@@ -1,0 +1,25 @@
+ int minDeletions(string s) {
+        unordered_map<char,int>mp;
+
+        for( int i = 0; i<s.length() ; i++ ){
+            mp[s[i]]++;
+        }
+
+        set<int>set;
+        int count = 0;
+        for(auto x: mp){
+            if(set.find(x.second) == set.end()){
+                set.insert(x.second);
+            }
+            else{
+                while(x.second > 0 && set.find(x.second)!= set.end()){
+                    x.second--;
+                    count++;
+                }
+                set.insert(x.second);
+            }
+        }
+
+        return count;
+
+    }
